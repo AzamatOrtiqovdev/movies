@@ -2,8 +2,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
       const tabParenetElement = document.querySelector(".tabheader__items"),
             tabChildElements = document.querySelectorAll(".tabheader__item"),
-            tabContentElements = document.querySelectorAll(".tabcontent")
+            tabContentElements = document.querySelectorAll(".tabcontent"),
+            loaderElement = document.querySelector(".loader")
 
+      // Loader
+      setTimeout(() => {
+            loaderElement.style.opacity = "0"
+            setTimeout(() => {
+                  loaderElement.style.display = 'none'
+            }, 500)
+      }, 2000)
+
+      // tabs
       function hideTabContent() {
 
             tabChildElements.forEach(item => {
