@@ -51,11 +51,23 @@ window.addEventListener("DOMContentLoaded", () => {
       const deadline = '2023-06-04'
 
       function getTimeRemaining(endtime) {
-            const timer = Date.parse(endtime) - Date.parse(new Date()),
-                  days = Math.floor(timer / (24*60*60*1000)),
-                  hours = Math.floor((timer / (60*60*1000))%24),
-                  minutes = Math.floor((timer / (60*1000))%60),
+
+            let days, hours, minutes,seconds;
+
+            const timer = Date.parse(endtime) - Date.parse(new Date());
+             
+            if(timer <= 0) {
+                  days = 0
+                  hours = 0
+                  minutes = 0
+                  seconds = 0
+            } else {
+                  days = Math.floor(timer / (24*60*60*1000))
+                  hours = Math.floor((timer / (60*60*1000))%24)
+                  minutes = Math.floor((timer / (60*1000))%60)
                   seconds = Math.floor((timer / 1000)%60)
+            }
+                  
 
             return {timer, days, hours, minutes, seconds}
       }
