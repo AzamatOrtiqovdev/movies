@@ -105,4 +105,43 @@ window.addEventListener("DOMContentLoaded", () => {
       }
 
       setClock(".timer", deadline)
+
+      // Modal
+
+      const modalTrigger = document.querySelectorAll("[data-modal]"),
+            modalElement = document.querySelector(".modal"),
+            modalCloseElement = document.querySelector("[data-close")
+
+      function closeModal() {
+            modalElement.classList.add("hide")
+            modalElement.classList.remove("show")
+            document.body.style.overflow = ""
+      }
+
+      function showModal() {
+            modalElement.classList.add("show")
+            modalElement.classList.remove("hide")
+            document.body.style.overflow = "hidden"
+            clearInterval(modalTimerId)
+      }
+
+      modalTrigger.forEach(item => {
+            item.addEventListener("click", showModal)
+      })
+
+      modalCloseElement.addEventListener("click", closeModal)
+
+      modalElement.addEventListener("click", (event) => {
+            if(event.target = 'modal') {
+                  closeModal()
+            }
+      })
+
+      document.addEventListener("keydown", (event) => {
+            if(event.code == "Escape" && modalElement.classList.contains("show")) {
+                  closeModal()
+            }
+      })
+
+      const modalTimerId = setTimeout(showModal, 5000)
 })
