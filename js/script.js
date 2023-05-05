@@ -1,3 +1,5 @@
+import { menuData } from "/js/data.js";
+
 window.addEventListener("DOMContentLoaded", () => {
 
       const tabParenetElement = document.querySelector(".tabheader__items"),
@@ -85,7 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
                   days = timerElement.querySelector("#days"),
                   hours = timerElement.querySelector("#hours"),
                   minutes = timerElement.querySelector("#minutes"),
-                  seconds = timerElement.querySelector("#seconds")
+                  seconds = timerElement.querySelector("#seconds"),
                   timeInterval = setInterval(updateClock, 1000)
 
             updateClock() 
@@ -132,7 +134,7 @@ window.addEventListener("DOMContentLoaded", () => {
       modalCloseElement.addEventListener("click", closeModal)
 
       modalElement.addEventListener("click", (event) => {
-            if(event.target = 'modal') {
+            if(event.target.classList.contains('modal')) {
                   closeModal()
             }
       })
@@ -153,4 +155,46 @@ window.addEventListener("DOMContentLoaded", () => {
       }
 
       window.addEventListener("scroll", showModalByScroll)
+
+      // Class
+      
+      class MenuCard {
+            constructor(src, alt, title, descr, price, parentSelector) {
+                  this.src = src
+                  this.alt = alt
+                  this.title = title,
+                  this.descr = descr,
+                  this.price = price,
+                  this.parent = document.querySelector(parentSelector)
+                  this.transfer = 11380
+                  this.changeToUZS()
+            }
+
+            changeToUZS() {
+                  this.price = this.price * this.transfer
+            }
+
+            render() {
+                  const menuItemElement = document.createElement("div")
+
+                  menuItemElement.innerHTML = `
+
+                        <div class="menu__item">
+                              <img src=${this.src} alt=${this.alt} />
+                              <h3 class="menu__item-subtitle">${this.title}</h3>
+                              <div class="menu__item-descr">${this.descr}</div>
+                              <div class="menu__item-divider"></div>
+                              <div class="menu__item-price">
+                              <div class="menu__item-cost">Price:</div>
+                              <div class="menu__item-total"><span>${this.price}</span> uzs/month</div>
+                              </div>
+                        </div>
+                  `
+                  this.parent.append(menuItemElement)
+            }
+      }
+
+      menuData.forEach(item => {
+            new MenuCard(item.src, item.alt, item.title, item.descr, item.price, ".menu .container").render()
+      })
 })
