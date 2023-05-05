@@ -159,12 +159,13 @@ window.addEventListener("DOMContentLoaded", () => {
       // Class
       
       class MenuCard {
-            constructor(src, alt, title, descr, price, parentSelector) {
+            constructor(src, alt, title, descr, price, parentSelector, ...classes) {
                   this.src = src
                   this.alt = alt
-                  this.title = title,
-                  this.descr = descr,
-                  this.price = price,
+                  this.title = title
+                  this.descr = descr
+                  this.price = price
+                  this.classes = classes
                   this.parent = document.querySelector(parentSelector)
                   this.transfer = 11380
                   this.changeToUZS()
@@ -177,17 +178,20 @@ window.addEventListener("DOMContentLoaded", () => {
             render() {
                   const menuItemElement = document.createElement("div")
 
-                  menuItemElement.innerHTML = `
+                  if(this.classes.length === 0) {
+                        menuItemElement.classList.add("menu__item")
+                  } else {
+                        this.classes.forEach(className => {menuItemElement.classList.add(className)})
+                  }
 
-                        <div class="menu__item">
-                              <img src=${this.src} alt=${this.alt} />
-                              <h3 class="menu__item-subtitle">${this.title}</h3>
-                              <div class="menu__item-descr">${this.descr}</div>
-                              <div class="menu__item-divider"></div>
-                              <div class="menu__item-price">
-                              <div class="menu__item-cost">Price:</div>
-                              <div class="menu__item-total"><span>${this.price}</span> uzs/month</div>
-                              </div>
+                  menuItemElement.innerHTML = `
+                        <img src=${this.src} alt=${this.alt} />
+                        <h3 class="menu__item-subtitle">${this.title}</h3>
+                        <div class="menu__item-descr">${this.descr}</div>
+                        <div class="menu__item-divider"></div>
+                        <div class="menu__item-price">
+                        <div class="menu__item-cost">Price:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> uzs/month</div>
                         </div>
                   `
                   this.parent.append(menuItemElement)
@@ -197,4 +201,6 @@ window.addEventListener("DOMContentLoaded", () => {
       menuData.forEach(item => {
             new MenuCard(item.src, item.alt, item.title, item.descr, item.price, ".menu .container").render()
       })
+
+      
 })
