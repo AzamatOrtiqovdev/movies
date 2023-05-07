@@ -1,4 +1,4 @@
-import { menuData } from "/js/data.js";
+import { menuData , msg } from "../js/data.js";
 
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -202,5 +202,52 @@ window.addEventListener("DOMContentLoaded", () => {
             new MenuCard(item.src, item.alt, item.title, item.descr, item.price, ".menu .container").render()
       })
 
-      
+      // Form
+
+      const formElements = document.querySelectorAll("form")
+
+      formElements.forEach(form => {
+            postData(form)
+      })
+
+      function postData(form) {
+            form.addEventListener("submit", (event) => {
+                  event.preventDefault()
+
+                  const statusMessage = document.createElement("div")
+                  statusMessage.textContent = msg.loading
+                  form.append(statusMessage)
+
+                  const request = new XMLHttpRequest()
+                  request.open("POST", "server.php")
+                  request.setRequestHeader("Content-Type", "application/json")
+
+                  // request.setRequestHeader("Content-Type", "multipart/form-data") 
+                  // If we use Formdata, we won't need setRequestHeader()
+
+                  const formData = new FormData(form)
+                  const obj = {}
+
+                  formData.forEach((value, key) => {
+                        obj[key] = value
+                  })
+
+                  const objJson = JSON.stringify(obj)
+                  request.send(objJson)
+                  // request.send(formData)
+
+                  request.addEventListener("load", () => {
+                        if(request.status === 200) {
+                              console.log(request.response)
+                              statusMessage.textContent = msg.success
+                              form.reset()
+                              setTimeout(() => {
+                                    statusMessage.remove()
+                              }, 1000)
+                        } else {
+                              statusMessage.textContent = msg.failure
+                        }
+                  })
+            })
+      }
 })

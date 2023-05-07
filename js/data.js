@@ -21,3 +21,9 @@ export const menuData = [
             price: 20
       }
 ]
+
+export const msg = {
+      loading: "Loading...",
+      success: "Thank's for submitting our form",
+      failure: "Somthing went wrong"
+}
