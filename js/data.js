@@ -23,7 +23,7 @@ export const menuData = [
 ]
 
 export const msg = {
-      loading: "Loading...",
+      loading: "img/spinner.svg",
       success: "Thank's for submitting our form",
       failure: "Somthing went wrong"
 }
