@@ -217,36 +217,55 @@ window.addEventListener("DOMContentLoaded", () => {
                   statusMessage.style.cssText = "display: block; margin: 0 auto;"
                   form.insertAdjacentElement("afterend", statusMessage)
 
-                  const request = new XMLHttpRequest()
-                  request.open("POST", "server.php")
-                  request.setRequestHeader("Content-Type", "application/json")
+                  // const request = new XMLHttpRequest()
+                  // request.open("POST", "server.php")
+
+                  // request.setRequestHeader("Content-Type", "application/json")
 
                   // request.setRequestHeader("Content-Type", "multipart/form-data") 
                   // If we use Formdata, we won't need setRequestHeader()
 
                   const formData = new FormData(form)
-                  const obj = {}
 
+                  const obj = {}
                   formData.forEach((value, key) => {
                         obj[key] = value
                   })
 
-                  const objJson = JSON.stringify(obj)
-                  request.send(objJson)
-                  // request.send(formData)
-
-                  request.addEventListener("load", () => {
-                        if(request.status === 200) {
-                              console.log(request.response)
-                              showThanksModal(msg.success)
-                              form.reset()
-                              setTimeout(() => {
-                                    statusMessage.remove()
-                              }, 1000)
-                        } else {
-                              showThanksModal(msg.failure)
-                        }
+                  fetch("server.php", {
+                        method: "POST",
+                        headers: {"Content_type": "application/json"},
+                        body: JSON.stringify(obj)
                   })
+                  .then((data) => data.text())
+                  .then((data) => {
+                        console.log(data)
+                        showThanksModal(msg.success)
+                        statusMessage.remove()
+                  })
+                  .catch(() => {
+                        showThanksModal(msg.failure)
+                  })
+                  .finally(() => {
+                        form.reset()
+                  })
+
+                  
+                  // const objJson = JSON.stringify(obj)
+                  // request.send(objJson)
+                  // request.send(formData)
+                  // request.addEventListener("load", () => {
+                  //       if(request.status === 200) {
+                  //             console.log(request.response)
+                  //             showThanksModal(msg.success)
+                  //             form.reset()
+                  //             setTimeout(() => {
+                  //                   statusMessage.remove()
+                  //             }, 1000)
+                  //       } else {
+                  //             showThanksModal(msg.failure)
+                  //       }
+                  // })
             })
       }
 
