@@ -1,4 +1,4 @@
-import { menuData , msg } from "../js/data.js";
+import { msg } from "../js/data.js";
 
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -196,48 +196,60 @@ window.addEventListener("DOMContentLoaded", () => {
             }
       }
 
-      menuData.forEach(item => {
-            new MenuCard(item.src, item.alt, item.title, item.descr, item.price, ".menu .container").render()
-      })
+      axios.get("http://localhost:3000/menuData")
+            .then((menuData) => {
+                  menuData.data.forEach(({src, alt, title, descr, price}) => { // destruptizatsiya
+                        new MenuCard(src, alt, title, descr, price, ".menu .container").render()
+                  })
+            })
+
+      // async function getRecource(url) {
+      //       const res = await fetch(url)
+      //       return await res.json()
+      // }
+
+      // getRecource("http://localhost:3000/menuData")
+      //       .then((menuData) => {
+      //             menuData.forEach(({src, alt, title, descr, price}) => { // destruptizatsiya
+      //                   new MenuCard(src, alt, title, descr, price, ".menu .container").render()
+      //             })
+      //       })
+      
 
       // Form
 
       const formElements = document.querySelectorAll("form")
 
       formElements.forEach(form => {
-            postData(form)
+            bindPostData(form)
       })
 
-      function postData(form) {
+      async function postData(url , data) {
+            const res = await fetch(url, {
+                  method: "POST",
+                  headers: {
+                        'Content-type': 'application/json; charset=UTF-8'
+                  },
+                  body: data,
+            })
+
+            return await res.json()
+      }
+
+      function bindPostData(form) {
             form.addEventListener("submit", (event) => {
                   event.preventDefault()
 
                   const statusMessage = document.createElement("img")
                   statusMessage.src = msg.loading
+
                   statusMessage.style.cssText = "display: block; margin: 0 auto;"
                   form.insertAdjacentElement("afterend", statusMessage)
 
-                  // const request = new XMLHttpRequest()
-                  // request.open("POST", "server.php")
-
-                  // request.setRequestHeader("Content-Type", "application/json")
-
-                  // request.setRequestHeader("Content-Type", "multipart/form-data") 
-                  // If we use Formdata, we won't need setRequestHeader()
-
                   const formData = new FormData(form)
+                  const json = JSON.stringify(Object.fromEntries(formData.entries()))
 
-                  const obj = {}
-                  formData.forEach((value, key) => {
-                        obj[key] = value
-                  })
-
-                  fetch("server.php", {
-                        method: "POST",
-                        headers: {"Content_type": "application/json"},
-                        body: JSON.stringify(obj)
-                  })
-                  .then((data) => data.text())
+                  postData("http://localhost:3000/request", json)
                   .then((data) => {
                         console.log(data)
                         showThanksModal(msg.success)
@@ -249,23 +261,6 @@ window.addEventListener("DOMContentLoaded", () => {
                   .finally(() => {
                         form.reset()
                   })
-
-                  
-                  // const objJson = JSON.stringify(obj)
-                  // request.send(objJson)
-                  // request.send(formData)
-                  // request.addEventListener("load", () => {
-                  //       if(request.status === 200) {
-                  //             console.log(request.response)
-                  //             showThanksModal(msg.success)
-                  //             form.reset()
-                  //             setTimeout(() => {
-                  //                   statusMessage.remove()
-                  //             }, 1000)
-                  //       } else {
-                  //             showThanksModal(msg.failure)
-                  //       }
-                  // })
             })
       }
 
@@ -292,4 +287,48 @@ window.addEventListener("DOMContentLoaded", () => {
                   closeModal()
             }, 4000)
       }
+
+      // Slider
+      const slides = document.querySelectorAll(".offer__slide"),
+            next = document.querySelector(".offer__slider-next"),
+            prev = document.querySelector(".offer__slider-prev"),
+            current = document.querySelector("#current"),
+            total = document.querySelector("#total")
+
+      let slideIndex = 1
+
+      if(slides.length < 10) {
+            total.textContent = `0${slides.length}`
+      } else {
+            total.textContent = slides.length
+      }
+
+      showSlide(1)
+
+      function showSlide(idx) {
+            if(idx > slides.length) {
+                  slideIndex = 1
+            }
+
+            if(idx < 1) {
+                  slideIndex = slides.length
+            }
+            slides.forEach(item => {item.style.display = "none"})
+            slides[slideIndex-1].style.display = "block"
+
+            if(slides.length < 10) {
+                  current.textContent = `0${slideIndex}`
+            } else {
+                  current.textContent = slideIndex
+            }
+      }
+
+      function plusSlides(idx) {
+            showSlide(slideIndex += idx)
+      }
+
+      next.addEventListener("click", () => {plusSlides(1)})
+      prev.addEventListener("click", () => {plusSlides(-1)})
+
+
 })
