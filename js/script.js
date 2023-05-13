@@ -296,7 +296,8 @@ window.addEventListener("DOMContentLoaded", () => {
             total = document.querySelector("#total"),
             slideWrapper = document.querySelector(".offer__slider-wrapper"),
             slideInner = document.querySelector(".offer__slider__inner"),
-            width = window.getComputedStyle(slideWrapper).width
+            width = window.getComputedStyle(slideWrapper).width,
+            slider = document.querySelector(".offer__slider")
 
       let slideIndex = 1;
       let offset = 0;
@@ -316,6 +317,22 @@ window.addEventListener("DOMContentLoaded", () => {
       } else {
             total.textContent = slides.length
             current.textContent = slideIndex
+      }
+
+      const indicators = document.createElement('ul')
+      const dots = []
+      indicators.classList.add('carosel-indecator')
+      slider.append(indicators)
+
+      for(let i=0; i<slides.length; i++) {
+            const dot = document.createElement('li')
+            dot.classList.add('carusel-dot')
+            dot.setAttribute("data-slide-to", i+1)
+            indicators.append(dot) 
+            if(i == 0) {
+                  dot.style.opacity = "1"
+            }
+            dots.push(dot)
       }
       
       next.addEventListener("click", () => {
@@ -337,6 +354,9 @@ window.addEventListener("DOMContentLoaded", () => {
             } else {
                   current.textContent = slideIndex
             }
+
+            dots.forEach(dot => dot.style.opacity = '.5')
+            dots[slideIndex-1].style.opacity = 1
       })
 
       prev.addEventListener("click", () => {
@@ -358,6 +378,29 @@ window.addEventListener("DOMContentLoaded", () => {
             } else {
                   current.textContent = slideIndex
             }
+
+            dots.forEach(dot => dot.style.opacity = '.5')
+            dots[slideIndex-1].style.opacity = 1
+      })
+
+      dots.forEach(dot => {
+            dot.addEventListener("click", (e) => {
+                  const slideto = e.target.getAttribute('data-slide-to')
+
+                  slideIndex = slideto
+
+                  offset = (+width.slice(0,width.length - 2))*(slideto - 1)
+                  slideInner.style.transform = `translateX(-${offset}px)`
+
+                  if(slides.length < 10) {
+                        current.textContent = `0${slideIndex}`
+                  } else {
+                        current.textContent = slideIndex
+                  }
+
+                  dots.forEach(dot => dot.style.opacity = '.5')
+                  dots[slideIndex-1].style.opacity = 1
+            })
       })
 
 
@@ -395,7 +438,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
       // next.addEventListener("click", () => {plusSlides(1)})
       // prev.addEventListener("click", () => {plusSlides(-1)})
-
-
-
 })

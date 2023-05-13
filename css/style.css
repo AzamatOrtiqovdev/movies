@@ -809,3 +809,30 @@ section {
     opacity: 1;
   }
 }
+
+.carosel-indecator {
+  position: relative;
+  right: 0;
+  bottom: 50px;
+  left: 0;
+  z-index: 15;
+  display: flex;
+  justify-content: center; 
+ margin: 0 auto;
+  list-style: none;
+}
+
+.carusel-dot {
+  box-sizing: border-box;
+  flex: 0 1 auto;
+  width: 30px;
+  height: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  background-clip: padding-box;
+  border-bottom: 1px solid transparent;
+  opacity: .3;
+  transition: opacity .6s ease;
+}
