@@ -293,42 +293,109 @@ window.addEventListener("DOMContentLoaded", () => {
             next = document.querySelector(".offer__slider-next"),
             prev = document.querySelector(".offer__slider-prev"),
             current = document.querySelector("#current"),
-            total = document.querySelector("#total")
+            total = document.querySelector("#total"),
+            slideWrapper = document.querySelector(".offer__slider-wrapper"),
+            slideInner = document.querySelector(".offer__slider__inner"),
+            width = window.getComputedStyle(slideWrapper).width
 
-      let slideIndex = 1
+      let slideIndex = 1;
+      let offset = 0;
+
+      //$$$$$$$--carusel slider--$$$$$$$$$//
+      slideInner.style.width = `${100*slides.length}%`
+      slideWrapper.style.overflow = 'hidden'
+      slideInner.style.display = 'flex'
+      slideInner.style.transition = '.5s ease all'
+      slides.forEach(slide => {
+            slide.style.width = width
+      })
 
       if(slides.length < 10) {
             total.textContent = `0${slides.length}`
+            current.textContent = `0${slideIndex}`
       } else {
             total.textContent = slides.length
+            current.textContent = slideIndex
       }
+      
+      next.addEventListener("click", () => {
+            if(offset == (+width.slice(0,width.length - 2))*(slides.length - 1)) {
+                  offset = 0
+            } else {
+                  offset += (+width.slice(0,width.length - 2))
+            }
+            slideInner.style.transform = `translateX(-${offset}px)`
 
-      showSlide(1)
-
-      function showSlide(idx) {
-            if(idx > slides.length) {
+            if(slideIndex == slides.length) {
                   slideIndex = 1
+            } else {
+                  slideIndex ++
             }
-
-            if(idx < 1) {
-                  slideIndex = slides.length
-            }
-            slides.forEach(item => {item.style.display = "none"})
-            slides[slideIndex-1].style.display = "block"
 
             if(slides.length < 10) {
                   current.textContent = `0${slideIndex}`
             } else {
                   current.textContent = slideIndex
             }
-      }
+      })
 
-      function plusSlides(idx) {
-            showSlide(slideIndex += idx)
-      }
+      prev.addEventListener("click", () => {
+            if(offset == 0) {
+                  offset = (+width.slice(0,width.length - 2))*(slides.length - 1)
+            } else {
+                  offset -= +width.slice(0,width.length - 2)
+            }
+            slideInner.style.transform = `translateX(-${offset}px)`
 
-      next.addEventListener("click", () => {plusSlides(1)})
-      prev.addEventListener("click", () => {plusSlides(-1)})
+            if(slideIndex == 1) {
+                  slideIndex = slides.length
+            } else {
+                  slideIndex --
+            }
+
+            if(slides.length < 10) {
+                  current.textContent = `0${slideIndex}`
+            } else {
+                  current.textContent = slideIndex
+            }
+      })
+
+
+      // +++++++++simple slider++++++++ //
+
+      // if(slides.length < 10) {
+      //       total.textContent = `0${slides.length}`
+      // } else {
+      //       total.textContent = slides.length
+      // }
+
+      // showSlide(1)
+
+      // function showSlide(idx) {
+      //       if(idx > slides.length) {
+      //             slideIndex = 1
+      //       }
+
+      //       if(idx < 1) {
+      //             slideIndex = slides.length
+      //       }
+      //       slides.forEach(item => {item.style.display = "none"})
+      //       slides[slideIndex-1].style.display = "block"
+
+      //       if(slides.length < 10) {
+      //             current.textContent = `0${slideIndex}`
+      //       } else {
+      //             current.textContent = slideIndex
+      //       }
+      // }
+
+      // function plusSlides(idx) {
+      //       showSlide(slideIndex += idx)
+      // }
+
+      // next.addEventListener("click", () => {plusSlides(1)})
+      // prev.addEventListener("click", () => {plusSlides(-1)})
+
 
 
 })
