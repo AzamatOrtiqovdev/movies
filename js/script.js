@@ -336,10 +336,10 @@ window.addEventListener("DOMContentLoaded", () => {
       }
       
       next.addEventListener("click", () => {
-            if(offset == (+width.slice(0,width.length - 2))*(slides.length - 1)) {
+            if(offset == (+width.replace(/\D/g, ''))*(slides.length - 1)) {
                   offset = 0
             } else {
-                  offset += (+width.slice(0,width.length - 2))
+                  offset += (+width.replace(/\D/g, ''))
             }
             slideInner.style.transform = `translateX(-${offset}px)`
 
@@ -361,9 +361,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
       prev.addEventListener("click", () => {
             if(offset == 0) {
-                  offset = (+width.slice(0,width.length - 2))*(slides.length - 1)
+                  offset = (+width.replace(/\D/g, ''))*(slides.length - 1)
             } else {
-                  offset -= +width.slice(0,width.length - 2)
+                  offset -= +width.replace(/\D/g, '')
             }
             slideInner.style.transform = `translateX(-${offset}px)`
 
@@ -389,7 +389,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
                   slideIndex = slideto
 
-                  offset = (+width.slice(0,width.length - 2))*(slideto - 1)
+                  offset = (+width.replace(/\D/g, ''))*(slideto - 1)
                   slideInner.style.transform = `translateX(-${offset}px)`
 
                   if(slides.length < 10) {
