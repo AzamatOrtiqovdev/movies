@@ -1,161 +1,14 @@
-import { msg } from "../js/data.js";
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
 
-window.addEventListener("DOMContentLoaded", () => {
+/***/ "./src/modules/class.js":
+/*!******************************!*\
+  !*** ./src/modules/class.js ***!
+  \******************************/
+/***/ ((module) => {
 
-      const tabParenetElement = document.querySelector(".tabheader__items"),
-            tabChildElements = document.querySelectorAll(".tabheader__item"),
-            tabContentElements = document.querySelectorAll(".tabcontent"),
-            loaderElement = document.querySelector(".loader")
-
-      // Loader
-      setTimeout(() => {
-            loaderElement.style.opacity = "0"
-            setTimeout(() => {
-                  loaderElement.style.display = 'none'
-            }, 500)
-      }, 2000)
-
-      // tabs
-      function hideTabContent() {
-
-            tabChildElements.forEach(item => {
-                  item.classList.remove('tabheader__item_active')
-            })
-
-            tabContentElements.forEach(item => {
-                  item.classList.add('hide')
-                  item.classList.remove('show', "fade")
-            })
-
-      }
-
-      function showTabContent(i = 0) {
-            tabChildElements[i].classList.add("tabheader__item_active")
-            tabContentElements[i].classList.add("show","fade")
-            tabContentElements[i].classList.remove("hide")
-      }
-
-      hideTabContent()
-      showTabContent()
-
-      tabParenetElement.addEventListener("click", (event) => {
-            if(event.target && event.target.classList.contains("tabheader__item")) {
-                  tabChildElements.forEach((item, index) => {
-                        if(event.target == item) {
-                              hideTabContent()
-                              showTabContent(index)
-                        }
-                  })
-            }
-      })
-
-      // timer
-      const deadline = '2023-06-04'
-
-      function getTimeRemaining(endtime) {
-
-            let days, hours, minutes,seconds;
-
-            const timer = Date.parse(endtime) - Date.parse(new Date());
-             
-            if(timer <= 0) {
-                  days = 0
-                  hours = 0
-                  minutes = 0
-                  seconds = 0
-            } else {
-                  days = Math.floor(timer / (24*60*60*1000))
-                  hours = Math.floor((timer / (60*60*1000))%24)
-                  minutes = Math.floor((timer / (60*1000))%60)
-                  seconds = Math.floor((timer / 1000)%60)
-            }
-                  
-
-            return {timer, days, hours, minutes, seconds}
-      }
-
-      function getZero(num) {
-            if(num >=0 && num < 10) {
-                  return `0${num}`
-            }else {
-                  return num
-            }
-      }
-
-      function setClock(selector, endtime) {
-            const timerElement = document.querySelector(selector),
-                  days = timerElement.querySelector("#days"),
-                  hours = timerElement.querySelector("#hours"),
-                  minutes = timerElement.querySelector("#minutes"),
-                  seconds = timerElement.querySelector("#seconds"),
-                  timeInterval = setInterval(updateClock, 1000)
-
-            updateClock() 
-
-            function updateClock() {
-                  const t = getTimeRemaining(endtime)
-
-                  days.innerHTML = getZero(t.days)
-                  hours.innerHTML = getZero(t.hours)
-                  minutes.innerHTML = getZero(t.minutes)
-                  seconds.innerHTML = getZero(t.seconds)
-
-                  if(t.timer <= 0) {
-                        clearInterval(timeInterval)
-                  }
-            }
-      }
-
-      setClock(".timer", deadline)
-
-      // Modal
-
-      const modalTrigger = document.querySelectorAll("[data-modal]"),
-            modalElement = document.querySelector(".modal")
-
-      function closeModal() {
-            modalElement.classList.add("hide")
-            modalElement.classList.remove("show")
-            document.body.style.overflow = ""
-      }
-
-      function showModal() {
-            modalElement.classList.add("show")
-            modalElement.classList.remove("hide")
-            document.body.style.overflow = "hidden"
-            clearInterval(modalTimerId)
-      }
-
-      modalTrigger.forEach(item => {
-            item.addEventListener("click", showModal)
-      })
-
-
-      modalElement.addEventListener("click", (event) => {
-            if(event.target.classList.contains('modal') || event.target.getAttribute('data-close') == "") {
-                  closeModal()
-            }
-      })
-
-      document.addEventListener("keydown", (event) => {
-            if(event.code == "Escape" && modalElement.classList.contains("show")) {
-                  closeModal()
-            }
-      })
-
-      const modalTimerId = setTimeout(showModal, 5000)
-
-      function showModalByScroll() {
-            if((window.pageYOffset + document.documentElement.clientHeight) >= document.documentElement.scrollHeight) {
-                  showModal()
-                  window.removeEventListener("scroll", showModalByScroll)
-            }
-      }
-
-      window.addEventListener("scroll", showModalByScroll)
-
+function clas() {
       // Class
-      
       class MenuCard {
             constructor(src, alt, title, descr, price, parentSelector, ...classes) {
                   this.src = src
@@ -214,15 +67,33 @@ window.addEventListener("DOMContentLoaded", () => {
       //                   new MenuCard(src, alt, title, descr, price, ".menu .container").render()
       //             })
       //       })
-      
 
+}
+
+module.exports = clas
+
+
+/***/ }),
+
+/***/ "./src/modules/form.js":
+/*!*****************************!*\
+  !*** ./src/modules/form.js ***!
+  \*****************************/
+/***/ ((module) => {
+
+function form() {
       // Form
-
       const formElements = document.querySelectorAll("form")
 
       formElements.forEach(form => {
             bindPostData(form)
       })
+
+      const msg = {
+            loading: "img/spinner.svg",
+            success: "Thank's for submitting our form",
+            failure: "Somthing went wrong"
+      }
 
       async function postData(url , data) {
             const res = await fetch(url, {
@@ -287,7 +158,101 @@ window.addEventListener("DOMContentLoaded", () => {
                   closeModal()
             }, 4000)
       }
+}
 
+module.exports = form
+
+
+/***/ }),
+
+/***/ "./src/modules/loader.js":
+/*!*******************************!*\
+  !*** ./src/modules/loader.js ***!
+  \*******************************/
+/***/ ((module) => {
+
+function loader() {
+      const loaderElement = document.querySelector(".loader")
+
+      // Loader
+      setTimeout(() => {
+            loaderElement.style.opacity = "0"
+            setTimeout(() => {
+                  loaderElement.style.display = 'none'
+            }, 500)
+      }, 2000)
+}
+
+module.exports = loader
+
+
+/***/ }),
+
+/***/ "./src/modules/modal.js":
+/*!******************************!*\
+  !*** ./src/modules/modal.js ***!
+  \******************************/
+/***/ ((module) => {
+
+function modal() {
+      // Modal
+      const modalTrigger = document.querySelectorAll("[data-modal]"),
+            modalElement = document.querySelector(".modal")
+
+      function closeModal() {
+            modalElement.classList.add("hide")
+            modalElement.classList.remove("show")
+            document.body.style.overflow = ""
+      }
+
+      function showModal() {
+            modalElement.classList.add("show")
+            modalElement.classList.remove("hide")
+            document.body.style.overflow = "hidden"
+            clearInterval(modalTimerId)
+      }
+
+      modalTrigger.forEach(item => {
+            item.addEventListener("click", showModal)
+      })
+
+
+      modalElement.addEventListener("click", (event) => {
+            if(event.target.classList.contains('modal') || event.target.getAttribute('data-close') == "") {
+                  closeModal()
+            }
+      })
+
+      document.addEventListener("keydown", (event) => {
+            if(event.code == "Escape" && modalElement.classList.contains("show")) {
+                  closeModal()
+            }
+      })
+
+      const modalTimerId = setTimeout(showModal, 5000)
+
+      function showModalByScroll() {
+            if((window.pageYOffset + document.documentElement.clientHeight) >= document.documentElement.scrollHeight) {
+                  showModal()
+                  window.removeEventListener("scroll", showModalByScroll)
+            }
+      }
+
+      window.addEventListener("scroll", showModalByScroll)
+
+}
+
+module.exports = modal
+
+/***/ }),
+
+/***/ "./src/modules/slider.js":
+/*!*******************************!*\
+  !*** ./src/modules/slider.js ***!
+  \*******************************/
+/***/ ((module) => {
+
+function slider() {
       // Slider
       const slides = document.querySelectorAll(".offer__slide"),
             next = document.querySelector(".offer__slider-next"),
@@ -403,7 +368,6 @@ window.addEventListener("DOMContentLoaded", () => {
             })
       })
 
-
       // +++++++++simple slider++++++++ //
 
       // if(slides.length < 10) {
@@ -438,4 +402,190 @@ window.addEventListener("DOMContentLoaded", () => {
 
       // next.addEventListener("click", () => {plusSlides(1)})
       // prev.addEventListener("click", () => {plusSlides(-1)})
+
+}
+
+module.exports = slider
+
+
+/***/ }),
+
+/***/ "./src/modules/tab.js":
+/*!****************************!*\
+  !*** ./src/modules/tab.js ***!
+  \****************************/
+/***/ ((module) => {
+
+function tab() {
+      // tabs
+      const tabParenetElement = document.querySelector(".tabheader__items"),
+            tabChildElements = document.querySelectorAll(".tabheader__item"),
+            tabContentElements = document.querySelectorAll(".tabcontent")
+            
+      function hideTabContent() {
+
+            tabChildElements.forEach(item => {
+                  item.classList.remove('tabheader__item_active')
+            })
+
+            tabContentElements.forEach(item => {
+                  item.classList.add('hide')
+                  item.classList.remove('show', "fade")
+            })
+
+      }
+
+      function showTabContent(i = 0) {
+            tabChildElements[i].classList.add("tabheader__item_active")
+            tabContentElements[i].classList.add("show","fade")
+            tabContentElements[i].classList.remove("hide")
+      }
+
+      hideTabContent()
+      showTabContent()
+
+      tabParenetElement.addEventListener("click", (event) => {
+            if(event.target && event.target.classList.contains("tabheader__item")) {
+                  tabChildElements.forEach((item, index) => {
+                        if(event.target == item) {
+                              hideTabContent()
+                              showTabContent(index)
+                        }
+                  })
+            }
+      })
+}
+
+module.exports = tab
+
+/***/ }),
+
+/***/ "./src/modules/timer.js":
+/*!******************************!*\
+  !*** ./src/modules/timer.js ***!
+  \******************************/
+/***/ ((module) => {
+
+function timer() { 
+      // timer
+      const deadline = '2023-06-04'
+
+      function getTimeRemaining(endtime) {
+
+            let days, hours, minutes,seconds;
+
+            const timer = Date.parse(endtime) - Date.parse(new Date());
+             
+            if(timer <= 0) {
+                  days = 0
+                  hours = 0
+                  minutes = 0
+                  seconds = 0
+            } else {
+                  days = Math.floor(timer / (24*60*60*1000))
+                  hours = Math.floor((timer / (60*60*1000))%24)
+                  minutes = Math.floor((timer / (60*1000))%60)
+                  seconds = Math.floor((timer / 1000)%60)
+            }
+                  
+
+            return {timer, days, hours, minutes, seconds}
+      }
+
+      function getZero(num) {
+            if(num >=0 && num < 10) {
+                  return `0${num}`
+            }else {
+                  return num
+            }
+      }
+
+      function setClock(selector, endtime) {
+            const timerElement = document.querySelector(selector),
+                  days = timerElement.querySelector("#days"),
+                  hours = timerElement.querySelector("#hours"),
+                  minutes = timerElement.querySelector("#minutes"),
+                  seconds = timerElement.querySelector("#seconds"),
+                  timeInterval = setInterval(updateClock, 1000)
+
+            updateClock() 
+
+            function updateClock() {
+                  const t = getTimeRemaining(endtime)
+
+                  days.innerHTML = getZero(t.days)
+                  hours.innerHTML = getZero(t.hours)
+                  minutes.innerHTML = getZero(t.minutes)
+                  seconds.innerHTML = getZero(t.seconds)
+
+                  if(t.timer <= 0) {
+                        clearInterval(timeInterval)
+                  }
+            }
+      }
+
+      setClock(".timer", deadline)
+}
+
+module.exports = timer
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+/*!**************************!*\
+  !*** ./src/js/script.js ***!
+  \**************************/
+window.addEventListener("DOMContentLoaded", () => {
+      
+      const clas = __webpack_require__(/*! ../modules/class */ "./src/modules/class.js"),
+            form = __webpack_require__(/*! ../modules/form */ "./src/modules/form.js"),
+            loader = __webpack_require__(/*! ../modules/loader */ "./src/modules/loader.js"),
+            modal = __webpack_require__(/*! ../modules/modal */ "./src/modules/modal.js"),
+            slider = __webpack_require__(/*! ../modules/slider */ "./src/modules/slider.js"),
+            tab = __webpack_require__(/*! ../modules/tab */ "./src/modules/tab.js"),
+            timer = __webpack_require__(/*! ../modules/timer */ "./src/modules/timer.js")
+
+      clas()
+      form()
+      loader()
+      modal()
+      slider()
+      tab()
+      timer()
+         
 })
+})();
+
+/******/ })()
+;
+//# sourceMappingURL=bundle.js.map
