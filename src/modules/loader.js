@@ -1,13 +1,13 @@
-function loader() {
-      const loaderElement = document.querySelector(".loader")
+function loader(loaderElement) {
+      const loader = document.querySelector(loaderElement)
 
       // Loader
       setTimeout(() => {
-            loaderElement.style.opacity = "0"
+            loader.style.opacity = "0"
             setTimeout(() => {
-                  loaderElement.style.display = 'none'
+                  loader.style.display = 'none'
             }, 500)
       }, 2000)
 }
 
-module.exports = loader
+export default loader

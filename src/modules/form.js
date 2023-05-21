@@ -1,6 +1,9 @@
-function form() {
+import { showModal, closeModal } from "./modal"
+import { postData } from "./server/server"
+
+function form(formSelector, modalTimerId) {
       // Form
-      const formElements = document.querySelectorAll("form")
+      const formElements = document.querySelectorAll(formSelector)
 
       formElements.forEach(form => {
             bindPostData(form)
@@ -12,17 +15,6 @@ function form() {
             failure: "Somthing went wrong"
       }
 
-      async function postData(url , data) {
-            const res = await fetch(url, {
-                  method: "POST",
-                  headers: {
-                        'Content-type': 'application/json; charset=UTF-8'
-                  },
-                  body: data,
-            })
-
-            return await res.json()
-      }
 
       function bindPostData(form) {
             form.addEventListener("submit", (event) => {
@@ -56,7 +48,7 @@ function form() {
             const prevModalDialog = document.querySelector(".modal__dialog")
 
             prevModalDialog.classList.add("hide")
-            showModal()
+            showModal(".modal", modalTimerId)
 
             const thanksModal = document.createElement('div')
             thanksModal.classList.add("modal__dialog")
@@ -72,9 +64,9 @@ function form() {
                   thanksModal.remove()
                   prevModalDialog.classList.add("show")
                   prevModalDialog.classList.remove("hide")
-                  closeModal()
+                  closeModal(".modal")
             }, 4000)
       }
 }
 
-module.exports = form
+export default form
